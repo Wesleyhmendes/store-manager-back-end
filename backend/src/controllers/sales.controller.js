@@ -19,9 +19,11 @@ const getSalesByIdController = async (req, res) => {
 
 const insertSalesController = async (req, res) => {
   const newSaleArray = req.body;
-  const insertSale = await salesService.insertSalesService(newSaleArray);
 
-  return res.status(201).json(insertSale);
+  const insertSale = await salesService.insertSalesService(newSaleArray);
+  const { status, data } = insertSale;
+
+  return res.status(status).json(data);
 };
 
 module.exports = {

@@ -25,12 +25,19 @@ const findSalesByIdModel = async (id) => {
 };
 
 const insertSalesModel = async (newSaleArray) => {
-  console.log(newSaleArray);
+  const [productsId] = await connection.execute(
+    'SELECT product_id FROM sales_products',
+  );
+
+  const error = newSaleArray.filter((sale) => !productsId.includes(sale.productId));
+
+  if (error.length > 0) return { status: 404, data: { message: 'Product not found' } };
+
   const [result] = await connection.execute(
     'INSERT INTO sales (date) VALUES (NOW());',
   );
   const lastId = result.insertId;
-  
+
   await Promise.all(newSaleArray.map(async (sale) => {
     await connection.execute(
       'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?);',
@@ -38,7 +45,7 @@ const insertSalesModel = async (newSaleArray) => {
     );
   }));
 
-  return { id: lastId, itemsSold: newSaleArray };
+  return { status: 200, data: { id: lastId, itemsSold: newSaleArray } };
 };
 
 module.exports = {

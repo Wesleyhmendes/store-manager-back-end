@@ -18,4 +18,6 @@ app.get('/sales', salesController.getAllSalesController);
 
 app.get('/sales/:id', salesController.getSalesByIdController);
 
+app.post('/products', productsController.insertProductsController);
+
 module.exports = app;

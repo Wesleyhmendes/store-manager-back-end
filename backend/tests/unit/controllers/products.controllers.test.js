@@ -4,14 +4,14 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
 const { productsController } = require('../../../src/controllers');
-const { products } = require('../../../src/services');
+const { productsService } = require('../../../src/services');
 const { allProductsModel, producByIdModel } = require('../../mocks/products.mock');
 
 chai.use(sinonChai);
 
 describe('Realizando testes para listagem dos produtos no controller', function () {
   it('Listando todos os produtos com sucesso no controller', async function () {
-    sinon.stub(products, 'getAllProducts').resolves([allProductsModel]);
+    sinon.stub(productsService, 'getAllProducts').resolves([allProductsModel]);
 
     const res = {
       status: sinon.stub().returnsThis(),
@@ -24,7 +24,7 @@ describe('Realizando testes para listagem dos produtos no controller', function 
   });
 
   it('Listando todos os produtos por id no controller', async function () {
-    sinon.stub(products, 'getProductById').resolves([producByIdModel]);
+    sinon.stub(productsService, 'getProductById').resolves([producByIdModel]);
 
     const req = { params: { id: 1 } };
     const res = {
@@ -38,7 +38,7 @@ describe('Realizando testes para listagem dos produtos no controller', function 
   });
 
   it('Listando todos os produtos com id inválido', async function () {
-    sinon.stub(products, 'getProductById').resolves([]);
+    sinon.stub(productsService, 'getProductById').resolves([]);
 
     const req = { params: { id: 1 } };
     const res = {

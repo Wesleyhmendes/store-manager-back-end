@@ -24,12 +24,12 @@ const insertProductsModel = async (name) => {
     [name],
   );
 
-  const [[newProduct]] = await connection.execute(
+  const [result] = await connection.execute(
     'SELECT * FROM products WHERE name = ?',
     [name],
   );
 
-  return newProduct;
+  return result[0];
 };
 
 module.exports = {

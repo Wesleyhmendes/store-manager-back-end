@@ -11,6 +11,8 @@ app.get('/', (_request, response) => {
   response.json({ status: 'Store Manager UP!' });
 });
 
+app.post('/sales', salesController.insertSalesController);
+
 app.get('/products', productsController.getAllProducts);
 
 app.get('/products/:id', productsController.getProductById);
@@ -20,7 +22,5 @@ app.post('/products', validateNewProduct, productsController.insertProductsContr
 app.get('/sales', salesController.getAllSalesController);
 
 app.get('/sales/:id', salesController.getSalesByIdController);
-
-app.post('/sales', salesController.insertSalesController);
 
 module.exports = app;

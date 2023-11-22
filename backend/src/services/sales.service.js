@@ -10,7 +10,14 @@ const getSalesByIdService = async (id) => {
   return sales;
 };
 
+const insertSalesService = async (newSaleArray) => {
+  const newSale = await salesModel.insertSalesModel(newSaleArray);
+
+  return newSale;
+};
+
 module.exports = {
   getAllSalesService,
   getSalesByIdService,
+  insertSalesService,
 };

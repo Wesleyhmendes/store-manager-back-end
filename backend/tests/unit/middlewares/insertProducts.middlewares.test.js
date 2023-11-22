@@ -9,7 +9,7 @@ const validateNewProduct = require('../../../src/middlewares/newProduct.validate
 
 describe('Testando o middleware para inserir produtos', function () {
   it('Testando o cadastro de um produto com sucesso', async function () {
-    const req = { body: { name: 'ProdutoX' } };
+    const req = { body: { name: 'Patos' } };
     const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
     const next = sinon.stub();
 
@@ -27,16 +27,18 @@ describe('Testando o middleware para inserir produtos', function () {
 
     await validateNewProduct(req, res, next);
 
+    expect(res.json).to.have.been.calledWith({ message: '"name" is required' });
     expect(res.status).to.have.been.calledWith(400);
   });
 
-  it('Testando o cadastro de um produto com nome inválido', async function () {
-    const req = { body: { name: 'P' } };
+  it('Testando o cadastro de um produto com nome com 4 caracteres', async function () {
+    const req = { body: { name: 'Pato' } };
     const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
     const next = sinon.stub();
 
     await validateNewProduct(req, res, next);
 
+    expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' });
     expect(res.status).to.have.been.calledWith(422);
   });
 

@@ -15,10 +15,12 @@ app.get('/products', productsController.getAllProducts);
 
 app.get('/products/:id', productsController.getProductById);
 
+app.post('/products', validateNewProduct, productsController.insertProductsController);
+
 app.get('/sales', salesController.getAllSalesController);
 
 app.get('/sales/:id', salesController.getSalesByIdController);
 
-app.post('/products', validateNewProduct, productsController.insertProductsController);
+app.post('/sales', salesController.insertSalesController);
 
 module.exports = app;

@@ -28,4 +28,6 @@ app.put('/products/:id', validateNewProduct, productsController.updateProductCon
 
 app.delete('/products/:id', productsController.deleteProductController);
 
+app.delete('/sales/:id', salesController.deleteSalesController);
+
 module.exports = app;

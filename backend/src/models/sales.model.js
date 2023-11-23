@@ -49,8 +49,27 @@ const insertSalesModel = async (newSaleArray) => {
   return { status: 201, data: { id: lastId, itemsSold: newSaleArray } };
 };
 
+const deleteSalesModel = async (id) => {
+  const [error] = await connection.execute(
+    'SELECT * FROM sales WHERE id = ?',
+    [id],
+  );
+
+  if (!error || error.length === 0) {
+    return { status: 404, data: { message: 'Sale not found' } };
+  }
+
+  await connection.execute(
+    'DELETE FROM sales WHERE id = ?;',
+    [id],
+  );
+
+  return { status: 204 };
+};
+
 module.exports = {
   findAllModel,
   findSalesByIdModel,
   insertSalesModel,
+  deleteSalesModel,
 };

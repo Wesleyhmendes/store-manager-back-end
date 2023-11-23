@@ -16,8 +16,15 @@ const insertSalesService = async (newSaleArray) => {
   return newSale;
 };
 
+const deleteSalesService = async (id) => {
+  const deleteSales = await salesModel.deleteSalesModel(id);
+
+  return deleteSales;
+};
+
 module.exports = {
   getAllSalesService,
   getSalesByIdService,
   insertSalesService,
+  deleteSalesService,
 };

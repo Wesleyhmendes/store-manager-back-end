@@ -26,8 +26,21 @@ const insertSalesController = async (req, res) => {
   return res.status(status).json(data);
 };
 
+const deleteSalesController = async (req, res) => {
+  const { id } = req.params;
+
+  const deleteSales = await salesService.deleteSalesService(id);
+  const { status, data } = deleteSales;
+
+  if (data) {
+    return res.status(status).json(data);
+  }
+  return res.status(status).end();
+};
+
 module.exports = {
   getAllSalesController,
   getSalesByIdController,
   insertSalesController,
+  deleteSalesController,
 };

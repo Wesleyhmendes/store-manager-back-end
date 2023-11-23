@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { salesModel } = require('../../../src/models');
 const { allProductsModel, producByIdModel } = require('../../mocks/products.mock');
+// const { newSaleMock, newSaleReturnMock } = require('../../mocks/sales.mock');
 
 describe('Realizando testes para listagem das vendas no model', function () {
   it('Listando todos as vendas com sucesso no model', async function () {

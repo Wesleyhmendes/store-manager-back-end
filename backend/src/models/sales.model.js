@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 const connection = require('./connection');
 
 const findAllModel = async () => {
@@ -25,17 +24,19 @@ const findSalesByIdModel = async (id) => {
 };
 
 const insertSalesModel = async (newSaleArray) => {
-  const [productsId] = await connection.execute(
+  const [productsIdRows] = await connection.execute(
     'SELECT product_id FROM sales_products',
   );
 
-  const error = newSaleArray.filter((sale) => !productsId.includes(sale.productId));
+  const productsId = productsIdRows.map((row) => row.product_id);
 
-  if (error.length > 0) return { status: 404, data: { message: 'Product not found' } };
+  const error = newSaleArray.find((sale) => !productsId.includes(sale.productId));
+  if (error) return { status: 404, data: { message: 'Product not found' } };
 
   const [result] = await connection.execute(
     'INSERT INTO sales (date) VALUES (NOW());',
   );
+
   const lastId = result.insertId;
 
   await Promise.all(newSaleArray.map(async (sale) => {
@@ -45,7 +46,7 @@ const insertSalesModel = async (newSaleArray) => {
     );
   }));
 
-  return { status: 200, data: { id: lastId, itemsSold: newSaleArray } };
+  return { status: 201, data: { id: lastId, itemsSold: newSaleArray } };
 };
 
 module.exports = {

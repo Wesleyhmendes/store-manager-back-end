@@ -57,9 +57,28 @@ const updateProductModel = async (id, name) => {
   return { status: 200, data: result };
 };
 
+const deleteProductModel = async (id) => {
+  const [error] = await connection.execute(
+    'SELECT * FROM products WHERE id = ?',
+    [id],
+  );
+
+  if (!error || error.length === 0) {
+    return { status: 404, data: { message: 'Product not found' } };
+  }
+
+  await connection.execute(
+    'DELETE FROM products WHERE id = ?;',
+    [id],
+  );
+
+  return { status: 204 };
+};
+
 module.exports = {
   findAllModel,
   findProductById,
   insertProductsModel,
   updateProductModel,
+  deleteProductModel,
 };

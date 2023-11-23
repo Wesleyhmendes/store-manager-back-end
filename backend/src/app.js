@@ -26,4 +26,6 @@ app.post('/sales', validateNewSale, salesController.insertSalesController);
 
 app.put('/products/:id', validateNewProduct, productsController.updateProductController);
 
+app.delete('/products/:id', productsController.deleteProductController);
+
 module.exports = app;

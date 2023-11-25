@@ -9,6 +9,48 @@ const newSaleMock = [
   },
 ];
 
+const newSaleMockIdError = [
+  {
+    productId: 123,
+    quantity: 1,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
+const newSaleNoIdMock = [
+  {
+    quantity: 1,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
+const newSaleMockQuantityError = [
+  {
+    productId: 1,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
+const newSaleMockQuantityZeroError = [
+  {
+    productId: 1,
+    quantity: 0,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
 const newSaleReturnMock = {
   status: 201,
   data: {
@@ -46,4 +88,8 @@ module.exports = {
   newSaleMock,
   newSaleReturnMock,
   insertSaleMock,
+  newSaleMockIdError,
+  newSaleMockQuantityError,
+  newSaleMockQuantityZeroError,
+  newSaleNoIdMock,
 };

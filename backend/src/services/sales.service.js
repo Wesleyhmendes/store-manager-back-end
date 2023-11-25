@@ -11,15 +11,28 @@ const getSalesByIdService = async (id) => {
 };
 
 const insertSalesService = async (newSaleArray) => {
-  const newSale = await salesModel.insertSalesModel(newSaleArray);
+  const validateSale = await Promise.all(newSaleArray.map(async (sale) => {
+    const salesFound = await salesModel.findSalesByIdModel(sale.productId);
+    return salesFound.length === 0;
+  }));
 
+  const validateError = validateSale.find((error) => error);
+
+  if (validateError) {
+    return { status: 404, data: { message: 'Product not found' } };
+  }
+
+  const newSale = await salesModel.insertSalesModel(newSaleArray);
   return newSale;
 };
 
 const deleteSalesService = async (id) => {
-  const deleteSales = await salesModel.deleteSalesModel(id);
+  const validateSale = await salesModel.findSalesByIdModel(id);
+  
+  if (!validateSale.length) return { status: 404, data: { message: 'Sale not found' } };
 
-  return deleteSales;
+  const deleteSale = await salesModel.deleteSalesModel(id);
+  return deleteSale;
 };
 
 module.exports = {

@@ -74,7 +74,6 @@ describe('Realizando testes para listagem das vendas no controller', function ()
     const req = { params: { id: 1 } };
     const res = {
       status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
       end: sinon.stub(),
     };
 

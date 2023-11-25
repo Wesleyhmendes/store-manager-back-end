@@ -69,9 +69,7 @@ describe('Realizando testes para listagem dos produtos no service', function () 
     expect(result.data).to.be.equal(updateProductModelResolve);
   });
 
-  it('Atualiza produtos no service com id inválido', async function () {
-    sinon.stub(productsModel, 'updateProductModel')
-      .resolves({ status: 404, data: { message: 'Product not found' } });    
+  it('Atualiza produtos no service com id inválido', async function () {  
     sinon.stub(productsModel, 'findProductById').resolves([]);
 
     const result = await productsService.updateProductService(123, 'Martelo do Batman');

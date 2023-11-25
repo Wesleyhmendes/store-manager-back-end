@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const { productsService } = require('../../../src/services');
 const { productsModel } = require('../../../src/models');
 const { productsController } = require('../../../src/controllers');
-const { allProductsModel, producByIdModel, newProduct } = require('../../mocks/products.mock');
+const { allProductsModel, producByIdModel, newProduct, productResolvedError } = require('../../mocks/products.mock');
 
 describe('Realizando testes para listagem dos produtos no service', function () {
   it('Listando todos os produtos com sucesso no service', async function () {
@@ -38,7 +38,7 @@ describe('Realizando testes para listagem dos produtos no service', function () 
     await productsController.getProductById(req, res);
 
     expect(res.status.calledWith(404));
-    expect(res.json.calledWith({ message: 'Product not found' }));
+    expect(res.json.calledWith(productResolvedError));
   });
 
   it('Cadastra produtos no service', async function () {
@@ -52,7 +52,7 @@ describe('Realizando testes para listagem dos produtos no service', function () 
     await productsService.insertProductsService(newProduct);
 
     expect(res.status.calledWith(404));
-    expect(res.json.calledWith({ message: 'Product not found' }));
+    expect(res.json.calledWith(productResolvedError));
   });
 
   it('Atualiza produtos no service', async function () {
@@ -60,59 +60,47 @@ describe('Realizando testes para listagem dos produtos no service', function () 
       id: 1,
       name: 'Martelo do Batman',
     };
-    sinon.stub(productsModel, 'updateProductModel').resolves({ status: 200, data: updateProductModelResolve });
-    
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
-    };
+    sinon.stub(productsModel, 'updateProductModel')
+      .resolves({ status: 200, data: updateProductModelResolve });
+    sinon.stub(productsModel, 'findProductById').resolves([updateProductModelResolve]);
 
-    await productsService.updateProductService(updateProductModelResolve);
+    const result = await productsService.updateProductService(updateProductModelResolve);
 
-    expect(res.status.calledWith(200));
-    expect(res.json.calledWith({ status: 200, data: updateProductModelResolve }));
+    expect(result.data).to.be.equal(updateProductModelResolve);
   });
 
   it('Atualiza produtos no service com id inválido', async function () {
-    sinon.stub(productsModel, 'updateProductModel').resolves({ status: 404, data: { message: 'Product not found' } });
-    
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
-    };
+    sinon.stub(productsModel, 'updateProductModel')
+      .resolves({ status: 404, data: { message: 'Product not found' } });    
+    sinon.stub(productsModel, 'findProductById').resolves([]);
 
-    await productsService.updateProductService({ status: 404, data: { message: 'Product not found' } });
+    const result = await productsService.updateProductService(123, 'Martelo do Batman');
 
-    expect(res.status.calledWith(404));
-    expect(res.json.calledWith({ status: 404, data: { message: 'Product not found' } }));
+    expect(result.data).to.be.deep.equal({ message: 'Product not found' });
+    expect(result.status).to.be.equal(404);
   });
 
   it('Deleta um produto do service', async function () {
-    sinon.stub(productsModel, 'deleteProductModel').resolves({ status: 204 });
-    
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
+    const deleteProductModelResolve = {
+      id: 1,
+      name: 'Martelo do Batman',
     };
+    sinon.stub(productsModel, 'deleteProductModel').resolves({ status: 204 });
+    sinon.stub(productsModel, 'findProductById').resolves([deleteProductModelResolve]);
 
-    await productsService.deleteProductService({ status: 204 });
+    const result = await productsService.deleteProductService({ status: 204 });
 
-    expect(res.status.calledWith(204));
+    expect(result.status).to.be.equal(204);
   });
 
   it('Deleta um produto do service com id inválido', async function () {
-    const error = { status: 404, data: { message: 'Product not found' } };
-    sinon.stub(productsModel, 'deleteProductModel').resolves(error);
-    
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
-    };
+    sinon.stub(productsModel, 'deleteProductModel').resolves(productResolvedError);
+    sinon.stub(productsModel, 'findProductById').resolves([]);
 
-    await productsService.deleteProductService(error);
+    const result = await productsService.deleteProductService(22);
 
-    expect(res.status.calledWith(404));
-    expect(res.json.calledWith(error));
+    expect(result.data).to.be.deep.equal({ message: 'Product not found' });
+    expect(result.status).to.be.equal(404);
   });
 
   afterEach(function () {

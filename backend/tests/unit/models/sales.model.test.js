@@ -25,6 +25,8 @@ describe('Realizando testes para listagem das vendas no model', function () {
     expect(findProductsById).to.be.deep.equal([producByIdModel]);
   });
 
+  
+
   afterEach(function () {
     sinon.restore();
   });

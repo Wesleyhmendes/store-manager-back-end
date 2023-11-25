@@ -44,6 +44,7 @@ const deleteProductController = async (req, res) => {
   if (data) {
     return res.status(status).json(data);
   }
+  
   return res.status(status).end();
 };
 

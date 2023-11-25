@@ -17,14 +17,21 @@ const insertProductsService = async (name) => {
 };
 
 const updateProductService = async (id, name) => {
-  const updateProduct = await productModel.updateProductModel(id, name);
+  const validateProduct = await productModel.findProductById(id);
+  if (!validateProduct.length) {
+    return { status: 404, data: { message: 'Product not found' } };
+  }
 
+  const updateProduct = await productModel.updateProductModel(id, name);
   return updateProduct;
 };
 
 const deleteProductService = async (id) => {
+  const validateProduct = await productModel.findProductById(id);
+  if (!validateProduct.length) {
+    return { status: 404, data: { message: 'Product not found' } };
+  }
   const deleteProduct = await productModel.deleteProductModel(id);
-
   return deleteProduct;
 };
 

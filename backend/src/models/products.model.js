@@ -33,15 +33,6 @@ const insertProductsModel = async (name) => {
 };
 
 const updateProductModel = async (id, name) => {
-  const [error] = await connection.execute(
-    'SELECT name FROM products WHERE id = ?',
-    [id],
-  );
-
-  if (!error || error.length === 0) {
-    return { status: 404, data: { message: 'Product not found' } };
-  }
-
   await connection.execute(
     `UPDATE products
     SET name = ?
@@ -49,24 +40,10 @@ const updateProductModel = async (id, name) => {
     [name, id],
   );
 
-  const [[result]] = await connection.execute(
-    'SELECT * FROM products WHERE id = ?;',
-    [id],
-  );
-
-  return { status: 200, data: result };
+  return { status: 200, data: { id: Number(id), name } };
 };
 
 const deleteProductModel = async (id) => {
-  const [error] = await connection.execute(
-    'SELECT * FROM products WHERE id = ?',
-    [id],
-  );
-
-  if (!error || error.length === 0) {
-    return { status: 404, data: { message: 'Product not found' } };
-  }
-
   await connection.execute(
     'DELETE FROM products WHERE id = ?;',
     [id],

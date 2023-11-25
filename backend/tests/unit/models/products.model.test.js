@@ -24,6 +24,33 @@ describe('Realizando testes para listagem dos produtos', function () {
     expect(findProductsById).to.be.deep.equal([producByIdModel]);
   });
 
+  it('Cadastrando produtos no model com sucesso', async function () {
+    const modelResolve = { id: 3, name: 'ProdutoX' };
+    sinon.stub(connection, 'execute').onFirstCall().resolves([{ insertId: 3 }])
+      .onSecondCall()
+      .resolves([[modelResolve]]);
+
+    const newProduct = await productsModel.insertProductsModel('ProdutoX');
+
+    expect(newProduct).to.be.deep.equal(modelResolve);
+  });
+
+  it('Atualizando produtos no model com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([]);
+
+    const newProduct = await productsModel.updateProductModel(1, 'Martelo do Batman');
+
+    expect(newProduct).to.be.deep.equal({ status: 200, data: { id: 1, name: 'Martelo do Batman' } });
+  });
+
+  it('Deletando produtos no model com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([]);
+
+    const newProduct = await productsModel.deleteProductModel(1);
+
+    expect(newProduct).to.be.deep.equal({ status: 204 });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

@@ -27,9 +27,12 @@ const updateProduct = {
   },
 };
 
+const productResolvedError = { message: 'Product not found' };
+
 module.exports = {
   allProductsModel,
   producByIdModel,
   newProduct,
   updateProduct,
+  productResolvedError,
 };

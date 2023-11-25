@@ -3,6 +3,7 @@ const productsController = require('./controllers/products.controller');
 const salesController = require('./controllers/sales.controller');
 const validateNewProduct = require('./middlewares/newProduct.validate');
 const validateNewSale = require('./middlewares/newSale.validate');
+const validateSaleNewQuantity = require('./middlewares/saleNewQuantity.validate');
 
 const app = express();
 app.use(express.json());
@@ -29,5 +30,11 @@ app.put('/products/:id', validateNewProduct, productsController.updateProductCon
 app.delete('/products/:id', productsController.deleteProductController);
 
 app.delete('/sales/:id', salesController.deleteSalesController);
+
+app.put(
+  '/sales/:saleId/products/:productId/quantity',
+  validateSaleNewQuantity,
+  salesController.updateSaleProductQuantity,
+);
 
 module.exports = app;

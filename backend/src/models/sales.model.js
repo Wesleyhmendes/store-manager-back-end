@@ -49,9 +49,29 @@ const deleteSalesModel = async (id) => {
   return { status: 204 };
 };
 
+const updateSaleProductQuantity = async (newQuantity, saleId, productId) => {
+  await connection.execute(
+    `UPDATE sales_products
+    SET quantity = ?
+    WHERE sale_id = ? AND product_id = ?`,
+    [newQuantity, Number(saleId), Number(productId)],
+  );
+
+  return {
+    status: 200,
+    data: {
+      date: new Date(),
+      productId: Number(productId),
+      quantity: newQuantity,
+      saleId: Number(saleId),
+    },
+  };
+};
+
 module.exports = {
   findAllModel,
   findSalesByIdModel,
   insertSalesModel,
   deleteSalesModel,
+  updateSaleProductQuantity,
 };

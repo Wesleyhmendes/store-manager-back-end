@@ -25,15 +25,13 @@ describe('Realizando testes para listagem das vendas no model', function () {
     expect(findProductsById).to.be.deep.equal([producByIdModel]);
   });
 
-  it.only('Cadastrando uma nova venda com sucesso no model', async function () {
+  it('Cadastrando uma nova venda com sucesso no model', async function () {
     sinon.stub(connection, 'execute')
-      .onFirstCall().resolves({ insertId: 4 })
+      .onFirstCall().resolves([{ insertId: 4 }])
       .onSecondCall()
       .resolves([]);
 
-    const result = await salesModel.insertSalesModel(
-      { status: 201, data: { id: 4, itemsSold: newSaleMock } },
-    );
+    const result = await salesModel.insertSalesModel(newSaleMock);
 
     const expectedStatus = 201;
     const expectedData = { id: 4, itemsSold: newSaleMock };

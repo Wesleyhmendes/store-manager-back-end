@@ -69,7 +69,7 @@ describe('Realizando testes para listagem dos produtos no service', function () 
     expect(result.data).to.be.equal(updateProductModelResolve);
   });
 
-  it('Atualiza produtos no service com id inválido', async function () {  
+  it('Atualiza produtos no service com id inválido no service', async function () {  
     sinon.stub(productsModel, 'findProductById').resolves([]);
 
     const result = await productsService.updateProductService(123, 'Martelo do Batman');
@@ -91,7 +91,7 @@ describe('Realizando testes para listagem dos produtos no service', function () 
     expect(result.status).to.be.equal(204);
   });
 
-  it('Deleta um produto do service com id inválido', async function () {
+  it('Deleta um produto do service com id inválido no service', async function () {
     sinon.stub(productsModel, 'deleteProductModel').resolves(productResolvedError);
     sinon.stub(productsModel, 'findProductById').resolves([]);
 
@@ -99,6 +99,29 @@ describe('Realizando testes para listagem dos produtos no service', function () 
 
     expect(result.data).to.be.deep.equal({ message: 'Product not found' });
     expect(result.status).to.be.equal(404);
+  });
+
+  it('Pesquisa por um produto com sucesso no service', async function () {
+    const modelReturn = { status: 200, data: [{ id: 1, name: 'Martelo de Thor' }] };
+    sinon.stub(productsModel, 'searchProductModel').resolves(modelReturn);
+
+    const result = await productsService.searchProductsService('Martelo');
+
+    expect(result.data).to.be.deep.equal(modelReturn.data);
+    expect(result.status).to.be.equal(200);
+  });
+
+  it('Pesquisa todos os produtos sem o parametro "q" com sucesso no service', async function () {
+    const modelReturn = { status: 200, data: [{ id: 1, name: 'Martelo de Thor' }, { id: 2, name: 'Traje de encolhimento' }] };
+    const findAllModelReturn = [{ id: 1, name: 'Martelo de Thor' }, { id: 2, name: 'Traje de encolhimento' }];
+
+    sinon.stub(productsModel, 'searchProductModel').resolves(modelReturn);
+    sinon.stub(productsModel, 'findAllModel').resolves(findAllModelReturn);
+
+    const result = await productsService.searchProductsService();
+
+    expect(result.data).to.be.deep.equal(findAllModelReturn);
+    expect(result.status).to.be.equal(200);
   });
 
   afterEach(function () {

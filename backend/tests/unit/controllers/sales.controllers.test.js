@@ -8,7 +8,7 @@ const { salesService } = require('../../../src/services');
 const { 
   allProductsModel, producByIdModel,
 } = require('../../mocks/products.mock');
-const { insertSaleMock } = require('../../mocks/sales.mock');
+const { insertSaleMock, updateSaleQuantityMock } = require('../../mocks/sales.mock');
 
 chai.use(sinonChai);
 
@@ -97,6 +97,20 @@ describe('Realizando testes para listagem das vendas no controller', function ()
 
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+  });
+
+  it('Atualizando quantidade de produtos de uma venda no controller', async function () {
+    sinon.stub(salesService, 'updateSaleProductQuantity').resolves(updateSaleQuantityMock);
+    const req = { params: { saleId: 1, productId: 2 }, body: { quantity: 5 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateSaleProductQuantity(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updateSaleQuantityMock.data);
   });
 
   afterEach(function () {

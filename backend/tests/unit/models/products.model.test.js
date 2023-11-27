@@ -51,6 +51,16 @@ describe('Realizando testes para listagem dos produtos', function () {
     expect(newProduct).to.be.deep.equal({ status: 204 });
   });
 
+  it('Pesquisando produtos no model com sucesso', async function () {
+    const findAllModelReturn = [{ id: 1, name: 'Martelo de Thor' }];
+    sinon.stub(connection, 'execute').resolves([findAllModelReturn]);
+
+    const result = await productsModel.searchProductModel('Martelo');
+
+    expect(result.status).to.be.equal(200);
+    expect(result.data).to.be.deep.equal(findAllModelReturn);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

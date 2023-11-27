@@ -112,6 +112,23 @@ describe('Realizando testes para produtos no controller', function () {
     expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
   });
 
+  it('Pesquisando produtos com sucesso no controller', async function () {
+    const serviceReturn = [{ id: 1, name: 'Martelo de Thor' }];
+    sinon.stub(productsService, 'searchProductsService').resolves({ status: 200, data: serviceReturn });
+
+    const req = { query: { q: 'Martelo' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+      end: sinon.stub(), 
+    };
+
+    await productsController.searchProductsController(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(serviceReturn);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

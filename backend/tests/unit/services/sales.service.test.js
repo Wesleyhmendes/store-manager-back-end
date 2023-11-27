@@ -1,9 +1,11 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesService } = require('../../../src/services');
-const { salesModel } = require('../../../src/models');
+const { salesModel, productsModel } = require('../../../src/models');
 const { allProductsModel, producByIdModel } = require('../../mocks/products.mock');
-const { newSaleReturnMock, newSaleMock, newSaleMockIdError } = require('../../mocks/sales.mock');
+const {
+  newSaleReturnMock, newSaleMock, newSaleMockIdError, updateSaleQuantityMock, errorSale, errorProduct,
+} = require('../../mocks/sales.mock');
 
 describe('Realizando testes para listagem das vendas no service', function () {
   it('Listando todos as vendas com sucesso no service', async function () {
@@ -89,6 +91,39 @@ describe('Realizando testes para listagem das vendas no service', function () {
 
     expect(result.status).to.be.equal(404);
     expect(result).to.be.deep.equal(error);
+  });
+
+  it('Atualizando a quantidade dos produtos de uma venda com sucesso no service', async function () {
+    sinon.stub(salesModel, 'findSalesByIdModel').resolves(errorSale);
+    sinon.stub(productsModel, 'findProductById').resolves(errorProduct);
+    sinon.stub(salesModel, 'updateSaleProductQuantityModel').resolves(updateSaleQuantityMock);
+
+    const result = await salesService.updateSaleProductQuantity(15, 1, 2);
+
+    expect(result.status).to.be.equal(200);
+    expect(result).to.be.deep.equal(updateSaleQuantityMock);
+  });
+
+  it('Atualizando a quantidade dos produtos de uma venda com saleId inválido no service', async function () {
+    sinon.stub(salesModel, 'findSalesByIdModel').resolves([]);
+    sinon.stub(productsModel, 'findProductById').resolves(errorProduct);
+    sinon.stub(salesModel, 'updateSaleProductQuantityModel').resolves([]);
+
+    const result = await salesService.updateSaleProductQuantity(15, 999, 2);
+
+    expect(result.status).to.be.equal(404);
+    expect(result.data).to.be.deep.equal({ message: 'Sale not found' });
+  });
+
+  it('Atualizando a quantidade dos produtos de uma venda com productId inválido no service', async function () {
+    sinon.stub(salesModel, 'findSalesByIdModel').resolves(errorSale);
+    sinon.stub(productsModel, 'findProductById').resolves([]);
+    sinon.stub(salesModel, 'updateSaleProductQuantityModel').resolves([]);
+
+    const result = await salesService.updateSaleProductQuantity(15, 1, 999);
+
+    expect(result.status).to.be.equal(404);
+    expect(result.data).to.be.deep.equal({ message: 'Product not found in sale' });
   });
 
   afterEach(function () {

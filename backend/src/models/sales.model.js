@@ -49,7 +49,7 @@ const deleteSalesModel = async (id) => {
   return { status: 204 };
 };
 
-const updateSaleProductQuantity = async (newQuantity, saleId, productId) => {
+const updateSaleProductQuantityModel = async (newQuantity, saleId, productId) => {
   await connection.execute(
     `UPDATE sales_products
     SET quantity = ?
@@ -73,5 +73,5 @@ module.exports = {
   findSalesByIdModel,
   insertSalesModel,
   deleteSalesModel,
-  updateSaleProductQuantity,
+  updateSaleProductQuantityModel,
 };

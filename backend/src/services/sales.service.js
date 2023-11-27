@@ -48,7 +48,7 @@ const updateSaleProductQuantity = async (newQuantity, saleId, productId) => {
     return { status: 404, data: { message: 'Product not found in sale' } };
   }
 
-  const result = await salesModel.updateSaleProductQuantity(newQuantity, saleId, productId);
+  const result = await salesModel.updateSaleProductQuantityModel(newQuantity, saleId, productId);
 
   return result;
 };

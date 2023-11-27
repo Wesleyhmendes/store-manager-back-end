@@ -84,6 +84,31 @@ const insertSaleMock = {
   },
 };
 
+const updateSaleQuantityMock = {
+  status: 200,
+  data: {
+    date: '2023-11-25T20:57:05.000Z',
+    productId: 2,
+    quantity: 20,
+    saleId: 1,
+  },
+};
+
+const errorSale = [
+  {
+    date: '2023-11-25T20:57:05.000Z',
+    productId: 1,
+    quantity: 5,
+  },
+  {
+    date: '2023-11-25T20:57:05.000Z',
+    productId: 2,
+    quantity: 20,
+  },
+];
+
+const errorProduct = [{ id: 2, name: 'Traje de encolhimento' }];
+
 module.exports = {
   newSaleMock,
   newSaleReturnMock,
@@ -92,4 +117,7 @@ module.exports = {
   newSaleMockQuantityError,
   newSaleMockQuantityZeroError,
   newSaleNoIdMock,
+  updateSaleQuantityMock,
+  errorSale,
+  errorProduct,
 };

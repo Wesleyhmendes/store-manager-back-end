@@ -52,10 +52,21 @@ const deleteProductModel = async (id) => {
   return { status: 204 };
 };
 
+const searchProductModel = async (q) => {
+  const [result] = await connection.execute(
+    `SELECT * FROM products
+    WHERE name LIKE ?`,
+    [`%${q}%`],
+  );
+  
+  return { status: 200, data: result };
+};
+
 module.exports = {
   findAllModel,
   findProductById,
   insertProductsModel,
   updateProductModel,
   deleteProductModel,
+  searchProductModel,
 };

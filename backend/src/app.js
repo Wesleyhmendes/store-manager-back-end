@@ -15,8 +15,6 @@ app.get('/', (_request, response) => {
 
 app.get('/products', productsController.getAllProducts);
 
-app.get('/products/:id', productsController.getProductById);
-
 app.post('/products', validateNewProduct, productsController.insertProductsController);
 
 app.get('/sales', salesController.getAllSalesController);
@@ -36,5 +34,9 @@ app.put(
   validateSaleNewQuantity,
   salesController.updateSaleProductQuantity,
 );
+
+app.get('/products/search', productsController.searchProductsController);
+
+app.get('/products/:id', productsController.getProductById);
 
 module.exports = app;

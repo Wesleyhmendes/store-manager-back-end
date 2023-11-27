@@ -35,10 +35,20 @@ const deleteProductService = async (id) => {
   return deleteProduct;
 };
 
+const searchProductsService = async (q) => {
+  if (!q) {
+    const result = await productModel.findAllModel();
+    return { status: 200, data: result };
+  }
+  const result = await productModel.searchProductModel(q);
+  return result;
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   insertProductsService,
   updateProductService,
   deleteProductService,
+  searchProductsService,
 };

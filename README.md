@@ -9,6 +9,29 @@ Também foi desenvolvido testes para garantir as funcionalidades das implementa�
 
 <br />
 
+<details>
+  <summary><strong>🔧 Instalação</strong></summary>
+<br />
+  
+1. Clone o repositório
+  * `git clone git@github.com:Wesleyhmendes/store-manager-back-end.git`.
+  * Entre na pasta do repositório que você acabou de clonar:
+    * `cd store-manager-back-end.git`
+
+2. Instale as dependências [**Caso existam**]
+  * `npm install`
+
+3. Crie uma branch a partir da branch `master`
+  * Verifique que você está na branch `master`
+    * Exemplo: `git branch`
+  * Se não estiver, mude para a branch `master`
+    * Exemplo: `git checkout master`
+  * Agora crie uma branch com o nome desejado
+
+<br />
+</details>
+
+<br />
 
 **🐳 Iniciando a aplicação no Docker Compose**
 
@@ -40,27 +63,6 @@ docker-compose up -d db
 # Inicie a aplicação em modo de desenvolvimento
 npm run dev:local
 ```
-
-<details>
-  <summary><strong>🔧 Instalação</strong></summary>
-
-1. Clone o repositório
-  * `git clone git@github.com:Wesleyhmendes/store-manager-back-end.git`.
-  * Entre na pasta do repositório que você acabou de clonar:
-    * `cd store-manager-back-end.git`
-
-2. Instale as dependências [**Caso existam**]
-  * `npm install`
-
-3. Crie uma branch a partir da branch `master`
-  * Verifique que você está na branch `master`
-    * Exemplo: `git branch`
-  * Se não estiver, mude para a branch `master`
-    * Exemplo: `git checkout master`
-  * Agora crie uma branch com o nome desejado
-
-<br />
-</details>
 
 <details>
   <summary><strong>📋 Requisitos</strong></summary>
